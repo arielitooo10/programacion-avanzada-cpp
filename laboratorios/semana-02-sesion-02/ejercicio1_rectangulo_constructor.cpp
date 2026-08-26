@@ -33,11 +33,21 @@ private:
 
 public:
     Rectangulo(double baseInicial, double alturaInicial) {
+        
         // TODO: llama setBase(baseInicial). Si devuelve false, asigna
         // base = 1.0 y avisa por consola:
         // "Aviso: base invalida, se uso 1.0 por defecto"
 
         // TODO: haz lo mismo con setAltura(alturaInicial) y altura.
+        base = baseInicial;
+        altura = alturaInicial;
+        
+    }
+
+    bool set_base(double nueva_base){
+        if (nueva_base <= 0){return false;}
+        base = nueva_base;
+        return true;
     }
 
     ~Rectangulo() {
