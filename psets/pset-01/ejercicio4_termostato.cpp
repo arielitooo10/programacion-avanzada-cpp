@@ -1,12 +1,12 @@
 // Ejercicio 4: Termostato
-//
+// 
 // Completa la clase Termostato: un atributo privado temperaturaActual,
 // un metodo fijarTemperaturaInicial(double t) que lo asigne directamente,
 // y un getter getTemperaturaActual() que lo devuelva sin modificarlo.
-//
+// 
 // Salida esperada:
 // Temperatura actual: 21.5
-//
+// 
 // Compilar:  g++ -std=c++20 -Wall -Wextra -g ejercicio4_termostato.cpp -o bin/ejercicio4
 // Ejecutar:  ./bin/ejercicio4
 
@@ -19,11 +19,12 @@ private:
 public:
     double getTemperaturaActual() {
         // TODO: retorna temperaturaActual
-        return 0.0;
+        return temperaturaActual;
     }
 
     void fijarTemperaturaInicial(double t) {
         // TODO: asigna t a temperaturaActual
+        temperaturaActual = t;
     }
 };
 
