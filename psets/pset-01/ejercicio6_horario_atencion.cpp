@@ -1,5 +1,5 @@
 // Ejercicio 6: HorarioAtencion
-//
+// 
 // Completa la clase HorarioAtencion: dos atributos privados,
 // horaApertura y horaCierre, y un setter que devuelva bool,
 // setHorario(double apertura, double cierre), que valide un invariante
@@ -7,7 +7,7 @@
 // menor o igual a 24, y apertura estrictamente menor que cierre. Si el
 // invariante se rompe, no modifica ningun atributo y devuelve false.
 // Agrega tambien getHoraApertura() y getHoraCierre().
-//
+// 
 // Salida esperada:
 // Horario aceptado (8 a 18): true
 // Apertura: 8
@@ -15,7 +15,7 @@
 // Horario aceptado (20 a 10): false
 // Apertura: 8
 // Cierre: 18
-//
+// 
 // Compilar:  g++ -std=c++20 -Wall -Wextra -g ejercicio6_horario_atencion.cpp -o bin/ejercicio6
 // Ejecutar:  ./bin/ejercicio6
 
@@ -31,7 +31,12 @@ public:
         // TODO: valida apertura >= 0, cierre <= 24, apertura < cierre.
         // Si algo falla, retorna false sin modificar los atributos. Si
         // todo es valido, asigna los dos atributos juntos y retorna true.
-        return false;
+        if (apertura < 0.0 || cierre > 24.0 || apertura >= cierre) {
+            return false;
+        }
+        horaApertura = apertura;
+        horaCierre = cierre;
+        return true;
     }
 
     double getHoraApertura() {
