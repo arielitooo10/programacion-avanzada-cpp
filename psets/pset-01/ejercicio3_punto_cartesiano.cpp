@@ -1,6 +1,6 @@
 // Ejercicio 3: PuntoCartesiano
 // 
-// Completa el struct PuntoCartesiano: dos atributos, x e y, yun metodo
+// Completa el struct PuntoCartesiano: dos atributos, x e y, y un metodo
 // distancia(PuntoCartesiano otro) que devuelva la distancia entre este
 // punto y otro, recibido como parametro por valor. Usa la formula de
 // distancia euclidiana: raiz cuadrada de (dx*dx + dy*dy). std::sqrt vive
