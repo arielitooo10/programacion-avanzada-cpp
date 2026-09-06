@@ -1,12 +1,12 @@
 // Ejercicio 10: ReservaSala (integrador)
-//
+// 
 // Este ejercicio integra todo lo practicado en PSet 1: atributos
 // privados, un getter, un setter que valida un invariante conjunto
 // entre dos atributos (horaInicio/horaFin), un constructor con valor
 // por defecto ante un dato invalido (capacidadPersonas), y un
 // destructor. El programa ya crea tres objetos dentro de un bloque en
 // main(); no necesitas tocar main(), solo completar la clase.
-//
+// 
 // Completa ReservaSala:
 // - Constructor ReservaSala(int capacidadInicial): si capacidadInicial
 //   es invalida (<= 0 o > 50), imprime "Reserva creada, capacidad
@@ -17,7 +17,7 @@
 //   del Ejercicio 6 (inicio >= 0, fin <= 24, inicio < fin).
 // - getCapacidadPersonas().
 // - Destructor ~ReservaSala(): imprime "Reserva liberada".
-//
+// 
 // Salida esperada:
 // Reserva creada, capacidad 20
 // Horario aceptado (9 a 11): true
@@ -29,7 +29,7 @@
 // Reserva liberada
 // Reserva liberada
 // Reserva liberada
-//
+// 
 // Compilar:  g++ -std=c++20 -Wall -Wextra -g ejercicio10_reserva_sala.cpp -o bin/ejercicio10
 // Ejecutar:  ./bin/ejercicio10
 
@@ -44,11 +44,23 @@ private:
 public:
     ReservaSala(int capacidadInicial) {
         // TODO
+        if (capacidadInicial <= 0 || capacidadInicial > 50) {
+            std::cout << "Reserva creada, capacidad segura por defecto (5)" << std::endl;
+            capacidadPersonas = 5;
+        } else {
+            capacidadPersonas = capacidadInicial;
+            std::cout << "Reserva creada, capacidad " << capacidadPersonas << std::endl;
+        }
     }
 
     bool setHorario(double inicio, double fin) {
         // TODO
-        return false;
+        if (inicio < 0.0 || fin > 24.0 || inicio >= fin) {
+            return false;
+        }
+        horaInicio = inicio;
+        horaFin = fin;
+        return true;
     }
 
     int getCapacidadPersonas() {
@@ -57,6 +69,7 @@ public:
 
     ~ReservaSala() {
         // TODO
+        std::cout << "Reserva liberada" << std::endl;
     }
 };
 
