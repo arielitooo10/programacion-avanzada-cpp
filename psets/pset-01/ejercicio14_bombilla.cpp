@@ -1,8 +1,8 @@
 // Ejercicio 14: Bombilla (desde cero)
-//
+// 
 // Este ejercicio no trae código de partida: escribe tú el archivo
 // completo, incluyendo los #include y el main().
-//
+// 
 // Diseña una class Bombilla con un atributo privado vidaUtilHoras
 // (double) y un constructor Bombilla(double horasIniciales):
 // - Si horasIniciales es menor o igual a 0, el constructor imprime
@@ -10,18 +10,51 @@
 //   y asigna vidaUtilHoras = 1000.0.
 // - Si es válida (mayor que 0), la asigna directamente, sin imprimir
 //   nada.
-// Agrega también el getter getVidaUtilHoras().
-//
+// - Agrega también el getter getVidaUtilHoras().
+// 
 // Tu main() debe:
 // 1. Crear una Bombilla con 5000.0 horas (válida) e imprimir su vida
-//    útil.
+//   útil.
 // 2. Crear una Bombilla con -200.0 horas (inválida) e imprimir su vida
-//    útil.
-//
+//   útil.
+// 
 // Salida esperada, exactamente:
 // Vida util: 5000
 // Vida util invalida, se asigna 1000 horas por defecto
 // Vida util: 1000
-//
+// 
 // Compilar:  g++ -std=c++20 -Wall -Wextra -g ejercicio14_bombilla.cpp -o bin/ejercicio14
 // Ejecutar:  ./bin/ejercicio14
+
+#include <iostream>
+
+class Bombilla {
+private:
+    double vidaUtilHoras;
+
+public:
+    Bombilla(double horasIniciales) {
+        if (horasIniciales <= 0) {
+            std::cout << "Vida util invalida, se asigna 1000 horas por defecto\n";
+            vidaUtilHoras = 1000.0;
+        } else {
+            vidaUtilHoras = horasIniciales;
+        }
+    }
+
+    double getVidaUtilHoras() const {
+        return vidaUtilHoras;
+    }
+};
+
+int main() {
+    // 1. Crear una Bombilla con 5000.0 horas (válida)...
+    Bombilla b1(5000.0);
+    std::cout << "Vida util: " << b1.getVidaUtilHoras() << "\n";
+
+    // 2. Crear una Bombilla con -200.0 horas (inválida)...
+    Bombilla b2(-200.0);
+    std::cout << "Vida util: " << b2.getVidaUtilHoras() << "\n";
+
+    return 0;
+}
