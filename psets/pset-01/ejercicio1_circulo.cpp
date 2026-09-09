@@ -13,12 +13,15 @@
 
 #include <iostream>
 
+
 struct Circulo {
     double radio;
 
     double area() {
+    
         // TODO: retorna 3.14159265 * radio * radio
-        return 0.0;
+        return 3.14159265 * radio * radio;
+        
     }
 };
 
@@ -27,7 +30,7 @@ int main() {
     c.radio = 4.0;
 
     std::cout << "Radio: " << c.radio << std::endl;
-    std::cout << "Area: " << c.area() << std::endl;
+   std::cout << "Area: " << c.area() << std::endl;
 
     return 0;
 }
