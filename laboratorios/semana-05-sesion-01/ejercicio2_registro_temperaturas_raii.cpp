@@ -1,27 +1,31 @@
 #include <iostream>
 
 class RegistroTemperaturas {
-    private:
-        double* lecturas;
-        int capacidad;
-    public:
-        RegistroTemperaturas(int nuevaCapacidad) {
-            capacidad = nuevaCapacidad;
-            lecturas = new double[capacidad];
-            std::cout << "Memoria reservada para " << capacidad << " lecturas" << std::endl;
-        }
+private:
+    double* lecturas;
+    int capacidad;
+public:
+    RegistroTemperaturas(int nuevaCapacidad) {
+        capacidad = nuevaCapacidad;
+        lecturas = new double[capacidad];
+        std::cout << "Memoria reservada para " << capacidad << " lecturas" << std::endl;
+    }
 
-        void guardar(int indice, double valor) {
-            lecturas[indice] = valor;
-        }
+    void guardar(int indice, double valor) {
+        lecturas[indice] = valor;
+    }
 
-        double obtener(int indice) {
-            return lecturas[indice];
-        }
+    double obtener(int indice) {
+        return lecturas[indice];
+    }
+    ~RegistroTemperaturas (){
+        delete[] lecturas;
+        std:: cout<<"Memoria liberada"<< std:: endl; 
+    }
 
-        // TODO: agrega el destructor. Debe liberar "lecturas" con delete[]
-        // e imprimir "Memoria liberada", para atar la vida de ese recurso
-        // a la vida del objeto (RAII).
+    // TODO: agrega el destructor. Debe liberar "lecturas" con delete[]
+    // e imprimir "Memoria liberada", para atar la vida de ese recurso
+    // a la vida del objeto (RAII).
 };
 
 void registrarDia(int capacidad) {
