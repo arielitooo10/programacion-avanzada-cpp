@@ -1,28 +1,28 @@
 #include <iostream>
 
 class Dispositivo {
-    private:
-        int numeroSerie;
-        bool encendido;
-    public:
-        Dispositivo() {
-            numeroSerie = 0;
-            encendido = false;
-        }
+private:
+    int numeroSerie;
+    bool encendido;
+public:
+    Dispositivo() {
+        numeroSerie = 0;
+        encendido = false;
+    }
 
-        bool setNumeroSerie(int nuevoNumero) {
-            if (nuevoNumero <= 0) { return false; }
-            numeroSerie = nuevoNumero;
-            return true;
-        }
+    bool setNumeroSerie(int nuevoNumero) {
+        if (nuevoNumero <= 0) { return false; }
+        numeroSerie = nuevoNumero;
+        return true;
+    }
 
-        void encender() {
-            encendido = true;
-        }
+    void encender() {
+        encendido = true;
+    }
 
-        void describir() {
-            std::cout << "Dispositivo #" << numeroSerie << ", encendido: " << (encendido ? "si" : "no") << std::endl;
-        }
+    void describir() {
+        std::cout << "Dispositivo #" << numeroSerie << ", encendido: " << (encendido ? "si" : "no") << std::endl;
+    }
 };
 
 // TODO: Cartucho todavia no existe. Agregala con:
@@ -31,10 +31,33 @@ class Dispositivo {
 // - void consumir(int porcentaje): reduce nivelTintaPorc en ese porcentaje,
 //   sin bajar de 0
 // - int getNivelTintaPorc(): devuelve el nivel actual
+class Cartucho {
+private:
+    int nivelTintaPorc;
+public:
+    Cartucho() {
+        nivelTintaPorc = 100;
+    }
+
+    bool tieneTinta() {
+        return nivelTintaPorc > 0;
+    }
+
+    void consumir(int porcentaje) {
+        nivelTintaPorc -= porcentaje;
+        if (nivelTintaPorc < 0) { nivelTintaPorc = 0; }
+    }
+
+    int getNivelTintaPorc() {
+        return nivelTintaPorc;
+    }
+};
 
 // Un companero propone "class Impresora: public virtual Dispositivo, public Cartucho".
 // Antes de escribir el codigo, responde en el README por que ese diseno
 // es forzado, igual que Carro heredando de Motor en el Ejercicio 1.
+// (Respuesta: una Impresora "es un" Dispositivo, correcto usar herencia ahi.
+// Pero una Impresora "tiene un" Cartucho, no "es un" Cartucho -> composicion.)
 
 // TODO: Impresora hereda con virtual de Dispositivo (igual que la sesion
 // pasada) y tiene un atributo privado Cartucho. Agrega:
@@ -44,20 +67,33 @@ class Dispositivo {
 //   consume (paginas * 2) de tinta, y devuelve true.
 // int getNivelTintaPorc(): devuelve el nivel de tinta del cartucho.
 class Impresora: public virtual Dispositivo {
-    private:
-        int paginasPorMinuto;
-    public:
-        Impresora() {
-            paginasPorMinuto = 0;
-        }
+private:
+    int paginasPorMinuto;
+    Cartucho cartucho;
+public:
+    Impresora() {
+        paginasPorMinuto = 0;
+    }
 
-        bool setPaginasPorMinuto(int nuevasPpm) {
-            if (nuevasPpm <= 0) { return false; }
-            paginasPorMinuto = nuevasPpm;
-            return true;
-        }
+    bool setPaginasPorMinuto(int nuevasPpm) {
+        if (nuevasPpm <= 0) { return false; }
+        paginasPorMinuto = nuevasPpm;
+        return true;
+    }
 
-        // TODO
+    bool imprimir(int paginas) {
+        if (!cartucho.tieneTinta()) {
+            std::cout << "Sin tinta, no se puede imprimir" << std::endl;
+            return false;
+        }
+        std::cout << "Imprimiendo " << paginas << " paginas a " << paginasPorMinuto << " paginas por minuto" << std::endl;
+        cartucho.consumir(paginas * 2);
+        return true;
+    }
+
+    int getNivelTintaPorc() {
+        return cartucho.getNivelTintaPorc();
+    }
 };
 
 int main() {

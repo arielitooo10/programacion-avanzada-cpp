@@ -1,26 +1,26 @@
 #include <iostream>
 
 class Bateria {
-    private:
-        int nivelCargaPorc;
-    public:
-        Bateria() {
-            nivelCargaPorc = 100;
-        }
+private:
+    int nivelCargaPorc;
+public:
+    Bateria() {
+        nivelCargaPorc = 100;
+    }
 
-        bool setNivelCargaPorc(int nuevoNivel) {
-            if (nuevoNivel < 0 || nuevoNivel > 100) { return false; }
-            nivelCargaPorc = nuevoNivel;
-            return true;
-        }
+    bool setNivelCargaPorc(int nuevoNivel) {
+        if (nuevoNivel < 0 || nuevoNivel > 100) { return false; }
+        nivelCargaPorc = nuevoNivel;
+        return true;
+    }
 
-        int getNivelCargaPorc() {
-            return nivelCargaPorc;
-        }
+    int getNivelCargaPorc() {
+        return nivelCargaPorc;
+    }
 
-        bool estaCargada() {
-            return nivelCargaPorc > 20;
-        }
+    bool estaCargada() {
+        return nivelCargaPorc > 20;
+    }
 };
 
 // TODO: Dron no tiene ninguna relacion "es un" con Bateria. Agrega un
@@ -31,7 +31,21 @@ class Bateria {
 // void descargar(int porcentaje): reduce el nivel de carga de la bateria
 //   en ese porcentaje.
 class Dron {
-    // TODO
+private:
+    Bateria bateria;
+public:
+    bool despegar() {
+        if (!bateria.estaCargada()) {
+            std::cout << "Bateria muy baja, no despega" << std::endl;
+            return false;
+        }
+        std::cout << "Dron despegando con " << bateria.getNivelCargaPorc() << "% de bateria" << std::endl;
+        return true;
+    }
+
+    void descargar(int porcentaje) {
+        bateria.setNivelCargaPorc(bateria.getNivelCargaPorc() - porcentaje);
+    }
 };
 
 int main() {
