@@ -1,4 +1,4 @@
-// Ejercicio 20: Temperatura (desde cero, operator+ y operator<<)
+/// Ejercicio 20: Temperatura (desde cero, operator+ y operator<<)
 //
 // Este archivo no tiene codigo de partida. Escribe tu de tu propia clase,
 // tus propios includes y tu propio main().
@@ -24,3 +24,35 @@
 // 20.5 grados
 // 5.5 grados
 // 26 grados
+
+#include <iostream>
+
+class Temperatura {
+private:
+    double grados;
+public:
+    Temperatura(double gradosIniciales) {
+        grados = gradosIniciales;
+    }
+    double getGrados() {
+        return grados;
+    }
+    Temperatura operator+(Temperatura otra) {
+        return Temperatura(grados + otra.grados);
+    }
+};
+
+std::ostream& operator<<(std::ostream& os, Temperatura t) {
+    os << t.getGrados() << " grados";
+    return os;
+}
+
+int main() {
+    Temperatura t1(20.5);
+    Temperatura t2(5.5);
+    Temperatura t3 = t1 + t2;
+    std::cout << t1 << std::endl;
+    std::cout << t2 << std::endl;
+    std::cout << t3 << std::endl;
+    return 0;
+}
