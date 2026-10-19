@@ -1,71 +1,74 @@
 #include <iostream>
 
 class Empleado {
-    private:
-        int codigo;
-    public:
-        void setCodigo(int nuevoCodigo) {
-            codigo = nuevoCodigo;
-        }
+private:
+    int codigo;
 
-        int getCodigo() {
-            return codigo;
-        }
+public:
+    void setCodigo(int nuevoCodigo) {
+        codigo = nuevoCodigo;
+    }
 
-        virtual double salarioMensual() {
-            return 0.0;
-        }
+    int getCodigo() {
+        return codigo;
+    }
 
-        virtual void imprimirRol() {
-            std::cout << "Empleado sin rol";
-        }
+    virtual double salarioMensual() {
+        return 0.0;
+    }
+
+    virtual void imprimirRol() {
+        std::cout << "Empleado sin rol";
+    }
 };
 
 class Docente : public Empleado {
-    private:
-        double sueldoFijo;
-    public:
-        Docente(int nuevoCodigo, double nuevoSueldo) {
-            setCodigo(nuevoCodigo);
-            sueldoFijo = nuevoSueldo;
-        }
+private:
+    double sueldoFijo;
 
-        // TODO (paso 2): agrega "override" despues de "()" en los dos
-        // metodos de esta clase.
-        double salarioMensual() {
-            return sueldoFijo;
-        }
+public:
+    Docente(int nuevoCodigo, double nuevoSueldo) {
+        setCodigo(nuevoCodigo);
+        sueldoFijo = nuevoSueldo;
+    }
 
-        void imprimirRol() {
-            std::cout << "Docente";
-        }
+    // TODO (paso 2): agrega "override" despues de "()" en los dos
+    // metodos de esta clase.
+    double salarioMensual() override {
+        return sueldoFijo;
+    }
+
+    void imprimirRol() override {
+        std::cout << "Docente";
+    }
 };
 
 class Contratista : public Empleado {
-    private:
-        double tarifaPorHora;
-        int horasDelMes;
-    public:
-        Contratista(int nuevoCodigo, double nuevaTarifa, int nuevasHoras) {
-            setCodigo(nuevoCodigo);
-            tarifaPorHora = nuevaTarifa;
-            horasDelMes = nuevasHoras;
-        }
+private:
+    double tarifaPorHora;
+    int horasDelMes;
 
-        // TODO (paso 2): agrega "override" despues de la lista de
-        // parametros en los dos metodos de esta clase y compila. Lee el
-        // mensaje de error del compilador antes de corregir nada.
-        //
-        // TODO (paso 3): corrige el metodo que el compilador rechaza para
-        // que de verdad redefina al de Empleado. Las horas ya estan
-        // guardadas en el atributo horasDelMes.
-        double salarioMensual(int horas) {
-            return tarifaPorHora * horas;
-        }
+public:
+    Contratista(int nuevoCodigo, double nuevaTarifa, int nuevasHoras) {
+        setCodigo(nuevoCodigo);
+        tarifaPorHora = nuevaTarifa;
+        horasDelMes = nuevasHoras;
+    }
 
-        void imprimirRol() {
-            std::cout << "Contratista";
-        }
+    // TODO (paso 2): agrega "override" despues de la lista de
+    // parametros en los dos metodos de esta clase y compila. Lee el
+    // mensaje de error del compilador antes de corregir nada.
+    //
+    // TODO (paso 3): corrige el metodo que el compilador rechaza para
+    // que de verdad redefina al de Empleado. Las horas ya estan
+    // guardadas en el atributo horasDelMes.
+    double salarioMensual() override {
+        return tarifaPorHora * horasDelMes;
+    }
+
+    void imprimirRol() override {
+        std::cout << "Contratista";
+    }
 };
 
 int main() {
