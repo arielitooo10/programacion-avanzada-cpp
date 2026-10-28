@@ -1,56 +1,49 @@
 #include <iostream>
-#include <memory>
+#include <vector>
 
 // Historial<T> de la sesion pasada: capacidad fija, y rechaza el valor
 // que ya no cabe.
 
 template <typename T>
 class Historial {
-    private:
-        // TODO (paso 1): reemplaza estos tres atributos por un solo
-        // std::vector<T> llamado valores. Incluye <vector> arriba.
-        std::unique_ptr<T[]> valores;
-        int capacidad;
-        int usadas;
-    public:
-        Historial(int capacidadInicial) {
-            // TODO (paso 1): con el vector, reserva espacio para
-            // capacidadInicial elementos con valores.reserve(...).
-            capacidad = capacidadInicial;
-            usadas = 0;
-            valores = std::make_unique<T[]>(capacidad);
-        }
+private:
+    // TODO (paso 1): reemplaza estos tres atributos por un solo
+    // std::vector<T> llamado valores. Incluye <vector> arriba.
+    std::vector<T> valores;
 
-        bool agregar(T valor) {
-            // TODO (paso 2): con push_back el historial ya no se llena.
-            // Agrega el valor y devuelve true siempre.
-            if (usadas >= capacidad) {
-                return false;
-            }
-            valores[usadas] = valor;
-            usadas = usadas + 1;
-            return true;
-        }
+public:
+    Historial(int capacidadInicial) {
+        // TODO (paso 1): con el vector, reserva espacio para
+        // capacidadInicial elementos con valores.reserve(...).
+        valores.reserve(capacidadInicial);
+    }
 
-        T obtener(int indice) {
-            return valores[indice];
-        }
+    bool agregar(T valor) {
+        // TODO (paso 2): con push_back el historial ya no se llena.
+        // Agrega el valor y devuelve true siempre.
+        valores.push_back(valor);
+        return true;
+    }
 
-        T ultimo() {
-            // TODO (paso 2): el ultimo elemento del vector.
-            return valores[usadas - 1];
-        }
+    T obtener(int indice) {
+        return valores[indice];
+    }
 
-        int getUsadas() {
-            // TODO (paso 2): cuantos elementos tiene el vector.
-            return usadas;
-        }
+    T ultimo() {
+        // TODO (paso 2): el ultimo elemento del vector.
+        return valores.back();
+    }
 
-        int getCapacidad() {
-            // TODO (paso 3): cuantos elementos caben sin reservar memoria
-            // nueva.
-            return capacidad;
-        }
+    int getUsadas() {
+        // TODO (paso 2): cuantos elementos tiene el vector.
+        return static_cast<int>(valores.size());
+    }
+
+    int getCapacidad() {
+        // TODO (paso 3): cuantos elementos caben sin reservar memoria
+        // nueva.
+        return static_cast<int>(valores.capacity());
+    }
 };
 
 int main() {
@@ -76,6 +69,19 @@ int main() {
     //    recorriendo con un iterador, de semana.begin() a semana.end().
     // b) Suma los valores con un for de rango e imprime
     //    "Total de la semana: " con el resultado.
+    std::vector<int> semana = {4200, 1800, 3300, 5100, 2700, 3900, 4600};
+
+    std::cout << "Semana:";
+    for (std::vector<int>::iterator it = semana.begin(); it != semana.end(); it++) {
+        std::cout << " " << *it;
+    }
+    std::cout << std::endl;
+
+    int total = 0;
+    for (int valor : semana) {
+        total = total + valor;
+    }
+    std::cout << "Total de la semana: " << total << std::endl;
 
     return 0;
 }
