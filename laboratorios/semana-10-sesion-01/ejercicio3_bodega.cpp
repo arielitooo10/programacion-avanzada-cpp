@@ -1,4 +1,7 @@
 #include <iostream>
+#include <map>
+#include <set>
+#include <vector>
 
 // Salida esperada:
 // Stock: 120=2 210=5 305=10
@@ -50,6 +53,70 @@
 //   precedido de un espacio. Termina la linea.
 // - void imprimirAgotados(): "Agotados alguna vez:" y cada codigo
 //   precedido de un espacio. Termina la linea.
+class Bodega {
+private:
+    std::map<int, int> stock;
+    std::vector<int> retiros;
+    std::set<int> agotados;
+
+public:
+    void ingresar(int codigo, int cantidad) {
+        stock[codigo] = stock[codigo] + cantidad;
+    }
+
+    bool retirar(int codigo, int cantidad) {
+        std::map<int, int>::iterator it = stock.find(codigo);
+        if (it == stock.end() || it->second < cantidad) {
+            return false;
+        }
+        it->second = it->second - cantidad;
+        retiros.push_back(codigo);
+        if (it->second == 0) {
+            agotados.insert(codigo);
+        }
+        return true;
+    }
+
+    int stockDe(int codigo) {
+        std::map<int, int>::iterator it = stock.find(codigo);
+        if (it == stock.end()) {
+            return 0;
+        }
+        return it->second;
+    }
+
+    int cantidadDeProductos() {
+        return static_cast<int>(stock.size());
+    }
+
+    int retiroNumero(int posicion) {
+        return retiros[posicion];
+    }
+
+    void imprimirStock() {
+        std::cout << "Stock:";
+        for (std::pair<const int, int> par : stock) {
+            std::cout << " " << par.first << "=" << par.second;
+        }
+        std::cout << std::endl;
+    }
+
+    void imprimirRetiros() {
+        std::cout << "Retiros:";
+        for (int codigo : retiros) {
+            std::cout << " " << codigo;
+        }
+        std::cout << std::endl;
+    }
+
+    void imprimirAgotados() {
+        std::cout << "Agotados alguna vez:";
+        for (int codigo : agotados) {
+            std::cout << " " << codigo;
+        }
+        std::cout << std::endl;
+    }
+};
 
 void informarRetiro(int codigo, int cantidad, bool aceptado) {
     std::cout << "Retirar " << cantidad << " de " << codigo << ": ";
