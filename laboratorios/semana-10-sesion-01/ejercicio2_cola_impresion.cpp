@@ -16,38 +16,54 @@
 // con un numero. Un trabajo normal va al final; uno urgente, al frente.
 // Cualquier trabajo puede cancelarse, este donde este en la fila.
 class ColaDeImpresion {
-    private:
-        std::list<int> trabajos;
-    public:
-        void agregar(int id) {
-            // TODO: agrega el trabajo al final de la fila.
-        }
+private:
+    std::list<int> trabajos;
 
-        void agregarUrgente(int id) {
-            // TODO: agrega el trabajo al frente de la fila.
-        }
+public:
+    void agregar(int id) {
+        // TODO: agrega el trabajo al final de la fila.
+        trabajos.push_back(id);
+    }
 
-        bool cancelar(int id) {
-            // TODO: recorre la fila con un iterador. Si encuentras el
-            // trabajo, borralo con trabajos.erase(...) y devuelve true.
-            // Si no esta, devuelve false.
-            return false;
-        }
+    void agregarUrgente(int id) {
+        // TODO: agrega el trabajo al frente de la fila.
+        trabajos.push_front(id);
+    }
 
-        int siguiente() {
-            // TODO: devuelve el trabajo del frente y quitalo de la fila.
-            return 0;
+    bool cancelar(int id) {
+        // TODO: recorre la fila con un iterador. Si encuentras el
+        // trabajo, borralo con trabajos.erase(...) y devuelve true.
+        // Si no esta, devuelve false.
+        for (std::list<int>::iterator it = trabajos.begin(); it != trabajos.end(); it++) {
+            if (*it == id) {
+                trabajos.erase(it);
+                return true;
+            }
         }
+        return false;
+    }
 
-        int cantidad() {
-            // TODO: cuantos trabajos quedan en la fila.
-            return 0;
-        }
+    int siguiente() {
+        // TODO: devuelve el trabajo del frente y quitalo de la fila.
+        int id = trabajos.front();
+        trabajos.pop_front();
+        return id;
+    }
 
-        void imprimir() {
-            // TODO: imprime "Fila:" y cada trabajo precedido de un
-            // espacio, con un for de rango, y termina la linea.
+    int cantidad() {
+        // TODO: cuantos trabajos quedan en la fila.
+        return static_cast<int>(trabajos.size());
+    }
+
+    void imprimir() {
+        // TODO: imprime "Fila:" y cada trabajo precedido de un
+        // espacio, con un for de rango, y termina la linea.
+        std::cout << "Fila:";
+        for (int id : trabajos) {
+            std::cout << " " << id;
         }
+        std::cout << std::endl;
+    }
 };
 
 void informarCancelacion(int id, bool cancelado) {
