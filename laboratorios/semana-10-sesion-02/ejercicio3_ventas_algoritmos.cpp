@@ -1,4 +1,6 @@
+#include <algorithm>
 #include <iostream>
+#include <numeric>
 #include <vector>
 
 // Salida esperada:
@@ -14,28 +16,29 @@
 // que necesites.
 
 class Venta {
-    private:
-        int codigo;
-        int cantidad;
-        double precioUnitario;
-    public:
-        Venta(int nuevoCodigo, int nuevaCantidad, double nuevoPrecio) {
-            codigo = nuevoCodigo;
-            cantidad = nuevaCantidad;
-            precioUnitario = nuevoPrecio;
-        }
+private:
+    int codigo;
+    int cantidad;
+    double precioUnitario;
 
-        int getCodigo() {
-            return codigo;
-        }
+public:
+    Venta(int nuevoCodigo, int nuevaCantidad, double nuevoPrecio) {
+        codigo = nuevoCodigo;
+        cantidad = nuevaCantidad;
+        precioUnitario = nuevoPrecio;
+    }
 
-        int getCantidad() {
-            return cantidad;
-        }
+    int getCodigo() {
+        return codigo;
+    }
 
-        double getTotal() {
-            return cantidad * precioUnitario;
-        }
+    int getCantidad() {
+        return cantidad;
+    }
+
+    double getTotal() {
+        return cantidad * precioUnitario;
+    }
 };
 
 int main() {
@@ -51,17 +54,47 @@ int main() {
 
     // TODO: el total recaudado (la suma de getTotal() de todas las
     // ventas). Imprime "Total recaudado: ".
+    double totalRecaudado = std::accumulate(ventas.begin(), ventas.end(), 0.0, [](double acumulado, Venta v) {
+        return acumulado + v.getTotal();
+    });
+    std::cout << "Total recaudado: " << totalRecaudado << std::endl;
 
     // TODO: cuantas ventas tienen un total de al menos umbral. Imprime
     // "Ventas de al menos 20: ".
+    int ventasGrandes = static_cast<int>(std::count_if(ventas.begin(), ventas.end(), [umbral](Venta v) {
+        return v.getTotal() >= umbral;
+    }));
+    std::cout << "Ventas de al menos 20: " << ventasGrandes << std::endl;
 
     // TODO: busca la primera venta del producto 210 e imprime
     // "Primera venta de 210: N unidades". Despues busca una venta del
     // producto 999: si no existe, imprime "No hay ventas de 999". Escribe
     // la busqueda de modo que el codigo buscado sea una variable, no un
     // numero escrito dentro de la lambda.
+    int codigoBuscado = 210;
+    std::vector<Venta>::iterator encontrada = std::find_if(ventas.begin(), ventas.end(), [codigoBuscado](Venta v) {
+        return v.getCodigo() == codigoBuscado;
+    });
+    if (encontrada != ventas.end()) {
+        std::cout << "Primera venta de " << codigoBuscado << ": " << encontrada->getCantidad() << " unidades" << std::endl;
+    } else {
+        std::cout << "No hay ventas de " << codigoBuscado << std::endl;
+    }
+
+    codigoBuscado = 999;
+    encontrada = std::find_if(ventas.begin(), ventas.end(), [codigoBuscado](Venta v) {
+        return v.getCodigo() == codigoBuscado;
+    });
+    if (encontrada != ventas.end()) {
+        std::cout << "Primera venta de " << codigoBuscado << ": " << encontrada->getCantidad() << " unidades" << std::endl;
+    } else {
+        std::cout << "No hay ventas de " << codigoBuscado << std::endl;
+    }
 
     // TODO: ordena ventas de mayor a menor total.
+    std::sort(ventas.begin(), ventas.end(), [](Venta a, Venta b) {
+        return a.getTotal() > b.getTotal();
+    });
 
     std::cout << "Ordenadas por total:";
     for (Venta v : ventas) {
