@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+#include <stdexcept>
 
 // Salida esperada:
 // Stock: 120=2 210=5 305=10
@@ -16,49 +17,46 @@
 // cuando no puede retirar, y quien llama no sabe por que.
 
 class Bodega {
-    private:
-        std::map<int, int> stock;
-    public:
-        void ingresar(int codigo, int cantidad) {
-            stock[codigo] = stock[codigo] + cantidad;
-        }
+private:
+    std::map<int, int> stock;
 
-        // TODO 1: cambia retirar para que devuelva void y lance una
-        // excepcion en cada caso en que hoy devuelve false:
-        // - cantidad menor o igual a 0: std::invalid_argument, "cantidad no positiva";
-        // - codigo que no existe: std::out_of_range, "codigo desconocido";
-        // - stock menor que cantidad: std::runtime_error, "stock insuficiente".
-        // Ningun caso rechazado puede modificar el stock.
-        bool retirar(int codigo, int cantidad) {
-            if (cantidad <= 0) {
-                return false;
-            }
-            if (stock.count(codigo) == 0) {
-                return false;
-            }
-            if (stock[codigo] < cantidad) {
-                return false;
-            }
-            stock[codigo] = stock[codigo] - cantidad;
-            return true;
-        }
+public:
+    void ingresar(int codigo, int cantidad) {
+        stock[codigo] = stock[codigo] + cantidad;
+    }
 
-        // TODO 2: lee el stock con stock.at(codigo), sin revisar antes con
-        // count: si el codigo no existe, que la excepcion salga de aqui.
-        int stockDe(int codigo) {
-            if (stock.count(codigo) == 0) {
-                return -1;
-            }
-            return stock[codigo];
+    // TODO 1: cambia retirar para que devuelva void y lance una
+    // excepcion en cada caso en que hoy devuelve false:
+    // - cantidad menor o igual a 0: std::invalid_argument, "cantidad no positiva";
+    // - codigo que no existe: std::out_of_range, "codigo desconocido";
+    // - stock menor que cantidad: std::runtime_error, "stock insuficiente".
+    // Ningun caso rechazado puede modificar el stock.
+    void retirar(int codigo, int cantidad) {
+        if (cantidad <= 0) {
+            throw std::invalid_argument("cantidad no positiva");
         }
+        if (stock.count(codigo) == 0) {
+            throw std::out_of_range("codigo desconocido");
+        }
+        if (stock[codigo] < cantidad) {
+            throw std::runtime_error("stock insuficiente");
+        }
+        stock[codigo] = stock[codigo] - cantidad;
+    }
 
-        void imprimirStock() {
-            std::cout << "Stock:";
-            for (auto par : stock) {
-                std::cout << " " << par.first << "=" << par.second;
-            }
-            std::cout << std::endl;
+    // TODO 2: lee el stock con stock.at(codigo), sin revisar antes con
+    // count: si el codigo no existe, que la excepcion salga de aqui.
+    int stockDe(int codigo) {
+        return stock.at(codigo);
+    }
+
+    void imprimirStock() {
+        std::cout << "Stock:";
+        for (auto par : stock) {
+            std::cout << " " << par.first << "=" << par.second;
         }
+        std::cout << std::endl;
+    }
 };
 
 int main() {
@@ -74,10 +72,11 @@ int main() {
         // TODO 3: con try/catch, imprime "despachado" si retirar no lanza
         // nada, o "rechazado, " y el mensaje de la excepcion si lanza.
         std::cout << "Pedido de " << cantidades[i] << " x " << codigos[i] << ": ";
-        if (bodega.retirar(codigos[i], cantidades[i])) {
+        try {
+            bodega.retirar(codigos[i], cantidades[i]);
             std::cout << "despachado" << std::endl;
-        } else {
-            std::cout << "rechazado" << std::endl;
+        } catch (const std::exception& e) {
+            std::cout << "rechazado, " << e.what() << std::endl;
         }
     }
 
@@ -85,8 +84,16 @@ int main() {
 
     // TODO 4: imprime el stock de 305 y el de 999. Si stockDe lanza
     // std::out_of_range, imprime "no registrado" en vez del numero.
-    std::cout << "Stock de 305: " << bodega.stockDe(305) << std::endl;
-    std::cout << "Stock de 999: " << bodega.stockDe(999) << std::endl;
+    int consultas[2] = {305, 999};
+    for (int i = 0; i < 2; i++) {
+        std::cout << "Stock de " << consultas[i] << ": ";
+        try {
+            int cantidad = bodega.stockDe(consultas[i]);
+            std::cout << cantidad << std::endl;
+        } catch (const std::out_of_range& e) {
+            std::cout << "no registrado" << std::endl;
+        }
+    }
 
     return 0;
 }
