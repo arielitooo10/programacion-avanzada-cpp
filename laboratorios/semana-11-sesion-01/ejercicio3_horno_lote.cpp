@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 
 // Salida esperada:
 // Ventilacion encendida
@@ -54,19 +55,30 @@ class Horno {
         }
 
         void programar(int temperatura) {
+            if (temperatura < 50 || temperatura > 300) {
+                throw std::invalid_argument("temperatura fuera de rango");
+            }
             temperaturaProgramada = temperatura;
         }
 
         void verificarSensor(int lectura) {
             ultimaLectura = lectura;
+            int diferencia = lectura - temperaturaProgramada;
+            if (diferencia > 30 || diferencia < -30) {
+                throw std::runtime_error("sensor fuera de control");
+            }
         }
 
         void ejecutarLote(int temperaturas[], int lecturas[], int pasos) {
             Ventilacion ventilacion;
             for (int i = 0; i < pasos; i++) {
-                programar(temperaturas[i]);
-                verificarSensor(lecturas[i]);
-                std::cout << "Paso " << i + 1 << ": programado a " << temperaturas[i] << ", sensor en " << lecturas[i] << std::endl;
+                try {
+                    programar(temperaturas[i]);
+                    verificarSensor(lecturas[i]);
+                    std::cout << "Paso " << i + 1 << ": programado a " << temperaturas[i] << ", sensor en " << lecturas[i] << std::endl;
+                } catch (const std::invalid_argument& e) {
+                    std::cout << "Paso " << i + 1 << ": rechazado, " << e.what() << std::endl;
+                }
             }
         }
 };
@@ -76,7 +88,11 @@ int main() {
     int lecturas[6] = {175, 226, 0, 249, 241, 150};
 
     Horno horno;
-    horno.ejecutarLote(temperaturas, lecturas, 6);
+    try {
+        horno.ejecutarLote(temperaturas, lecturas, 6);
+    } catch (const std::runtime_error& e) {
+        std::cout << "Lote detenido: " << e.what() << std::endl;
+    }
 
     std::cout << "Temperatura programada al final: " << horno.getTemperaturaProgramada() << std::endl;
     return 0;
