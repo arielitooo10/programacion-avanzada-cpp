@@ -1,15 +1,6 @@
 #include <iostream>
 #include <vector>
-
-// Reporte de cuanto tiempo estuvo cada placa en el estacionamiento, a
-// partir del registro de entradas y salidas del dia (en minutos desde las
-// 7:00). Compila sin advertencias, y termina antes de tiempo.
-//
-// Salida esperada:
-// Placa 4521: 95 minutos
-// Placa 7788: 40 minutos
-// Placa 5555: sin registro hoy
-// Placa 3011: 210 minutos
+#include <optional>
 
 class Estadia {
     private:
@@ -23,15 +14,15 @@ class Estadia {
             salida = s;
         }
 
-        int getPlaca() {
+        int getPlaca() const {
             return placa;
         }
 
-        int getEntrada() {
+        int getEntrada() const {
             return entrada;
         }
 
-        int getSalida() {
+        int getSalida() const {
             return salida;
         }
 };
@@ -40,29 +31,32 @@ class RegistroDelDia {
     private:
         std::vector<Estadia> estadias;
     public:
-        void agregar(Estadia estadia) {
+        void agregar(const Estadia& estadia) {
             estadias.push_back(estadia);
         }
 
-        int cantidad() {
+        int cantidad() const {
             return estadias.size();
         }
 
-        // Devuelve la ultima estadia de la placa, o nullptr si no hay.
-        Estadia* ultimaDe(int placa) {
-            Estadia* encontrada = nullptr;
-            for (int i = 0; i < cantidad(); i++) {
+        std::optional<Estadia> ultimaDe(int placa) const {
+            for (int i = estadias.size() - 1; i >= 0; --i) {
                 if (estadias[i].getPlaca() == placa) {
-                    encontrada = &estadias[i];
+                    return estadias[i];
                 }
             }
-            return encontrada;
+            return std::nullopt;
         }
 };
 
-int minutosDe(RegistroDelDia* registro, int placa) {
-    Estadia* estadia = registro->ultimaDe(placa);
-    return estadia->getSalida() - estadia->getEntrada();
+void procesarPlaca(const RegistroDelDia* registro, int placa) {
+    std::optional<Estadia> estadia = registro->ultimaDe(placa);
+    if (estadia) {
+        int minutos = estadia->getSalida() - estadia->getEntrada();
+        std::cout << "Placa " << placa << ": " << minutos << " minutos" << std::endl;
+    } else {
+        std::cout << "Placa " << placa << ": sin registro hoy" << std::endl;
+    }
 }
 
 int main() {
@@ -73,8 +67,7 @@ int main() {
 
     int placas[4] = {4521, 7788, 5555, 3011};
     for (int i = 0; i < 4; i++) {
-        int minutos = minutosDe(&registro, placas[i]);
-        std::cout << "Placa " << placas[i] << ": " << minutos << " minutos" << std::endl;
+        procesarPlaca(&registro, placas[i]);
     }
 
     return 0;
