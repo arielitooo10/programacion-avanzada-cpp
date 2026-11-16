@@ -2,11 +2,6 @@
 
 #include "cola_impresion.h"
 
-// Salida esperada:
-// Cola: 12 20 8 20 20 10 5
-// Minutos de 25 paginas: 3
-// Minutos totales: 11
-
 int main() {
     ColaDeImpresion cola;
     cola.agregar(12);
