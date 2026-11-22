@@ -1,7 +1,5 @@
 // Ejercicio 7: Intervalo<T> (plantilla de clase)
 //
-// Completa los metodos marcados con TODO. No cambies las firmas ni el main().
-//
 // Compilar: g++ -std=c++20 -Wall -Wextra -g -o ejercicio7 ejercicio7_intervalo_plantilla.cpp
 // Ejecutar: ./ejercicio7
 //
@@ -23,10 +21,13 @@ private:
     T fin;
 public:
     Intervalo(T a, T b) {
-        // TODO: guarda el menor de a y b en inicio y el mayor en fin, en ese orden,
-        // aunque quien llama los pase al reves.
-        inicio = a;
-        fin = b;
+        if (a <= b) {
+            inicio = a;
+            fin = b;
+        } else {
+            inicio = b;
+            fin = a;
+        }
     }
     T getInicio() {
         return inicio;
@@ -35,17 +36,13 @@ public:
         return fin;
     }
     T ancho() {
-        // TODO: devuelve fin - inicio.
-        return inicio;
+        return fin - inicio;
     }
     bool contiene(T valor) {
-        // TODO: true si valor esta entre inicio y fin, ambos incluidos.
-        return false;
+        return valor >= inicio && valor <= fin;
     }
     bool seCruzaCon(Intervalo<T> otro) {
-        // TODO: true si los dos intervalos comparten al menos un valor: inicio de
-        // cada uno menor o igual que el fin del otro.
-        return false;
+        return inicio <= otro.fin && otro.inicio <= fin;
     }
 };
 
