@@ -1,7 +1,5 @@
 // Ejercicio 2: Empleado, Docente y Administrativo (un arreglo de punteros a la base)
 //
-// Completa los metodos marcados con TODO. No cambies las firmas ni el main().
-//
 // Compilar: g++ -std=c++20 -Wall -Wextra -g -o ejercicio2 ejercicio2_planilla_empleados.cpp
 // Ejecutar: ./ejercicio2
 //
@@ -31,8 +29,7 @@ public:
         return sueldoBase;
     }
     virtual double calcularPago() {
-        // TODO: devuelve el sueldo base, sin nada adicional.
-        return 0;
+        return sueldoBase;
     }
 };
 
@@ -45,8 +42,7 @@ public:
         horasExtra = h;
     }
     double calcularPago() override {
-        // TODO: devuelve el sueldo base (con getSueldoBase) mas 25 por cada hora extra.
-        return 0;
+        return getSueldoBase() + 25 * horasExtra;
     }
 };
 
@@ -59,15 +55,16 @@ public:
         bono = b;
     }
     double calcularPago() override {
-        // TODO: devuelve el sueldo base mas el bono.
-        return 0;
+        return getSueldoBase() + bono;
     }
 };
 
 double totalPlanilla(Empleado* planilla[], int cantidad) {
-    // TODO: recorre el arreglo y suma calcularPago() de cada empleado, a traves
-    // del puntero (planilla[i]->calcularPago()). Devuelve la suma.
-    return 0;
+    double total = 0;
+    for (int i = 0; i < cantidad; i++) {
+        total += planilla[i]->calcularPago();
+    }
+    return total;
 }
 
 int main() {
